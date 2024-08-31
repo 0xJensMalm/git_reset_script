@@ -1,6 +1,24 @@
 import subprocess
 import os
 
+def print_banner():
+    banner = """
+    ****************************************
+    *                                      *
+    *            GIT RESET                 *
+    *          Let's try again...          *
+    *                                      *
+    ****************************************
+    """
+    print(banner)
+
+def prompt_user():
+    while True:
+        response = input("Are you sure you want to perform a hard reset? (y/n): ").strip().lower()
+        if response in ['y', 'n']:
+            return response
+        print("Invalid input. Please enter 'y' or 'n'.")
+
 def run_command(command):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     output, error = process.communicate()
@@ -12,6 +30,12 @@ def run_command(command):
     return True
 
 def main():
+    print_banner()
+
+    response = prompt_user()
+    if response == 'n':
+        print("Operation canceled.")
+        return
 
     print("Fetching latest changes from remote...")
     if not run_command("git fetch origin"):
